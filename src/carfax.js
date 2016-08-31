@@ -48,3 +48,54 @@ database["currentAverageAge"] = averageAgeCalculator(carData);
 logger(database["currentAverageAge"]);
 
 // frontend filters
+var equals = function(element, value) {
+	return element === value;
+};
+
+var filterByColor = function(collection, inputColor) {
+	var allMatchingCars = [];
+	toolbelt.loop(collection, function(element) {
+		if (equals(element["color"], inputColor)) {
+			allMatchingCars.push(element);
+		}
+	});
+	return allMatchingCars;
+};
+console.log("Filter By Color");
+var silverCars = filterByColor(carData, "silver");
+console.dir(silverCars);
+
+var greaterThan = function(element, value) {
+	return element > value;
+};
+
+var lessThan = function(element, value) {
+	return element < value;
+};
+
+var filterAboveYear = function(collection, year) {
+	var allMatchingCars = [];
+	toolbelt.loop(collection, function(element) {
+		if (greaterThan(element["year"], year)) {
+			allMatchingCars.push(element);
+		}
+	});
+	return allMatchingCars;
+};
+console.log("Filter Above Year");
+var carsAbove2010 = filterAboveYear(carData, 2010);
+console.dir(carsAbove2010);
+
+var filterBelowYear = function(collection, year) {
+	var allMatchingCars = [];
+	toolbelt.loop(collection, function(element) {
+		if (lessThan(element["year"], year)) {
+			allMatchingCars.push(element);
+		}
+	});
+	return allMatchingCars;
+};
+console.log("Filter Below Year");
+var carsBelow2000 = filterBelowYear(carData, 2000);
+console.dir(carsBelow2000);
+
