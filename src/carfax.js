@@ -17,30 +17,24 @@ toolbelt.loop(results, logger);
 
 // backend data parsers
 var priceParser = function(carCollection) {
-	/*
-	// solve using loop()
-	var priceList = [];
-	toolbelt.loop(carCollection, function(carObject) {
-		priceList.push(carObject.price);
-	});
-	return priceList;
-	*/
-	// solve using transform()
 	return toolbelt.transform(carCollection, function(carObject) {
 		return carObject.price;
 	});
 };
 console.log("Price Parser");
-toolbelt.loop(priceParser(carData), logger);
+database["currentPrices"] = priceParser(carData);
+console.dir(database["currentPrices"]);
+//toolbelt.loop(database["currentPrices"], logger);
 
 var yearParser = function(carCollection) {
-	// this assumes the output does not contain distinct year(s) but the year for each car in the collection
 	return toolbelt.transform(carCollection, function(carObject) {
 		return carObject.year;
 	});
 };
 console.log("Year Parser");
-toolbelt.loop(yearParser(carData), logger);
+database["currentYears"] = yearParser(carData);
+console.dir(database["currentYears"]);
+//toolbelt.loop(database["currentYears"], logger);
 
 var averageAgeCalculator = function(carCollection) {
 	var totalYear = 0;
@@ -50,4 +44,7 @@ var averageAgeCalculator = function(carCollection) {
 	return Math.round(totalYear / carCollection.length);
 };
 console.log("Average Age Calculator");
-logger(averageAgeCalculator(carData));
+database["currentAverageAge"] = averageAgeCalculator(carData);
+logger(database["currentAverageAge"]);
+
+// frontend filters
