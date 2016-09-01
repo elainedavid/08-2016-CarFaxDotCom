@@ -99,3 +99,49 @@ console.log("Filter Below Year");
 var carsBelow2000 = filterBelowYear(carData, 2000);
 console.dir(carsBelow2000);
 
+// filter by refactoring
+var filterBy = function(collection, predicate) {
+	var results = [];
+	toolbelt.loop(collection, function(element) {
+		if (predicate(element)) {
+			results.push(element);
+		}
+	});
+	return results;
+};
+
+var filterByColor = function(collection, inputColor) {	
+	return filterBy(collection, function(element) {
+		return element["color"] === inputColor;
+	});
+}
+console.log("Filter By Color (Refactor)");
+var redCars = filterByColor(carData, "red");
+console.dir(redCars);
+
+var filterAboveYear = function(collection, year) {
+	return filterBy(collection, function(element) {
+		return element["year"] > year;
+	});
+};
+console.log("Filter Above Year (Refactor)");
+var carsAbove2010 = filterAboveYear(carData, 2010);
+console.dir(carsAbove2010);
+
+var filterBelowYear = function(collection, year) {
+	return filterBy(collection, function(element) {
+		return element["year"] < year;
+	});
+};
+console.log("Filter Below Year (Refactor)");
+var carsBelow2000 = filterBelowYear(carData, 2000);
+console.dir(carsBelow2000);
+
+var filterBetweenYears = function(collection, startYear, endYear) {
+	return filterBy(collection, function(element) {
+		return element["year"] > startYear && element["year"] < endYear;
+	});
+};
+console.log("Filter Between Years");
+var carsBetween2010To2015 = filterBetweenYears(carData, 2010, 2015);
+console.dir(carsBetween2010To2015);
