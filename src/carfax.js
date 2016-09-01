@@ -211,3 +211,39 @@ var leastExpensiveCar = function(collection) {
 console.log("Least Expensive Car (Refactor)");
 var carResult = leastExpensiveCar(carData);
 console.log(carResult);
+
+// data modeling
+var makeAndModelMatrix = function(collection) {
+	return toolbelt.transform(collection, function(element) {
+		return [element.make, element.model];
+	});
+};
+console.log("Make and Model Matrix");
+var resultMatrix = makeAndModelMatrix(carData);
+console.dir(resultMatrix);
+
+var calculateTotalCarsByMake = function(collection) {
+	var result = {};
+	// first find all the distinct makes in the car collection
+	toolbelt.loop(collection, function(element) {
+		if (!result.hasOwnProperty(element["make"])) {
+			result[element["make"]] = 0;
+		}
+	});
+	// loop through all the makes and get the total for each
+	// TODO: possibly refactor this to simplify the matching logic without the need for the loop
+	toolbelt.loop(result, function(value, key) {
+		result[key] = toolbelt.distill(collection, function(element, currentValue) {
+			if (element["make"] === key) {
+				return value++;
+			} else {
+				return value;
+			}
+		}, 0);
+		//console.log("Total for " + key + ": " + result[key]);
+	});
+	return result;
+};
+console.log("Calculate Total Cars By Make");
+var carsTotal = calculateTotalCarsByMake(carData);
+console.log(carsTotal);
