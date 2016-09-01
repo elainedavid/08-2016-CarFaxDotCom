@@ -100,18 +100,8 @@ var carsBelow2000 = filterBelowYear(carData, 2000);
 console.dir(carsBelow2000);
 
 // filter by refactoring
-var filterBy = function(collection, predicate) {
-	var results = [];
-	toolbelt.loop(collection, function(element) {
-		if (predicate(element)) {
-			results.push(element);
-		}
-	});
-	return results;
-};
-
 var filterByColor = function(collection, inputColor) {	
-	return filterBy(collection, function(element) {
+	return toolbelt.filterBy(collection, function(element) {
 		return element["color"] === inputColor;
 	});
 }
@@ -120,7 +110,7 @@ var redCars = filterByColor(carData, "red");
 console.dir(redCars);
 
 var filterAboveYear = function(collection, year) {
-	return filterBy(collection, function(element) {
+	return toolbelt.filterBy(collection, function(element) {
 		return element["year"] > year;
 	});
 };
@@ -129,7 +119,7 @@ var carsAbove2010 = filterAboveYear(carData, 2010);
 console.dir(carsAbove2010);
 
 var filterBelowYear = function(collection, year) {
-	return filterBy(collection, function(element) {
+	return toolbelt.filterBy(collection, function(element) {
 		return element["year"] < year;
 	});
 };
@@ -138,7 +128,7 @@ var carsBelow2000 = filterBelowYear(carData, 2000);
 console.dir(carsBelow2000);
 
 var filterBetweenYears = function(collection, startYear, endYear) {
-	return filterBy(collection, function(element) {
+	return toolbelt.filterBy(collection, function(element) {
 		return element["year"] > startYear && element["year"] < endYear;
 	});
 };
@@ -187,3 +177,37 @@ console.log("Least Expensive Car");
 database["leastExpensiveCar"] = leastExpensiveCar(carData);
 console.log(database["leastExpensiveCar"]);
 
+var averagePriceCalculator = function(collection) {
+	var averagePrice = toolbelt.distill(collection, function(element, currentValue) {
+		return element + currentValue;
+	}, 0);	
+	return Math.round(averagePrice / collection.length);
+};
+console.log("Average Price Calculator (Refactor)");
+console.log(averagePriceCalculator(database["currentPrices"]));
+
+var mostExpensiveCar = function(collection) {
+	return toolbelt.distill(collection, function(element, currentValue) {
+		if (element["price"] > currentValue["price"]) {
+			return element;
+		} else {
+			return currentValue;
+		}
+	}, {price: 0});
+};
+console.log("Most Expensive Car (Refactor)");
+var carResult = mostExpensiveCar(carData);
+console.log(carResult);
+
+var leastExpensiveCar = function(collection) {
+	return toolbelt.distill(collection, function(element, currentValue) {
+		if (element["price"] < currentValue["price"] || currentValue["price"] === 0) {
+			return element;
+		} else {
+			return currentValue;
+		}
+	}, {price: 0});	
+};
+console.log("Least Expensive Car (Refactor)");
+var carResult = leastExpensiveCar(carData);
+console.log(carResult);

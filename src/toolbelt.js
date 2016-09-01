@@ -22,3 +22,23 @@ toolbelt.transform = function(collection, callback){
 	});
 	return results;
 };
+
+
+toolbelt.filterBy = function(collection, predicate) {
+  var results = [];
+  toolbelt.loop(collection, function(element) {
+    if (predicate(element)) {
+      results.push(element);
+    }
+  });
+  return results;
+};
+
+
+toolbelt.distill = function(collection, callback, startValue) {
+  var returnValue = startValue;
+  toolbelt.loop(collection, function(element) {
+    returnValue = callback(element, returnValue);
+  });
+  return returnValue;
+};
