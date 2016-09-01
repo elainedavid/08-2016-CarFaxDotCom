@@ -145,3 +145,45 @@ var filterBetweenYears = function(collection, startYear, endYear) {
 console.log("Filter Between Years");
 var carsBetween2010To2015 = filterBetweenYears(carData, 2010, 2015);
 console.dir(carsBetween2010To2015);
+
+var averagePriceCalculator = function(collection) {
+	var averagePrice = 0;
+	toolbelt.loop(collection, function(element) {
+		averagePrice = averagePrice + element;
+	});
+	return Math.round(averagePrice / collection.length);
+};
+console.log("Average Price Calculator");
+database["currentAveragePrice"] = averagePriceCalculator(database["currentPrices"]);
+console.log(database["currentAveragePrice"]);
+
+var mostExpensiveCar = function(collection) {
+	var result = {
+		price: 0
+	};
+	toolbelt.loop(collection, function(element) {
+		if (element["price"] > result["price"]) {
+			result = element;
+		}
+	});
+	return result;
+};
+console.log("Most Expensive Car");
+database["mostExpensiveCar"] = mostExpensiveCar(carData);
+console.log(database["mostExpensiveCar"]);
+
+var leastExpensiveCar = function(collection) {
+	var result = {
+		price: 0
+	};
+	toolbelt.loop(collection, function(element) {
+		if (element["price"] < result["price"] || result["price"] === 0) {
+			result = element;
+		}
+	});
+	return result;
+};
+console.log("Least Expensive Car");
+database["leastExpensiveCar"] = leastExpensiveCar(carData);
+console.log(database["leastExpensiveCar"]);
+
